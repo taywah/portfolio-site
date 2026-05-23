@@ -24,7 +24,7 @@
 <div class="container">
 
 <h1>Comparable-Tool Churn Signal</h1>
-<p class="subtitle">A signal-discovery analysis for identifying companies that recently stopped using a comparable platform, showed no detected replacement, and were not already covered by an active sales motion.</p>
+<p class="subtitle">A signal-discovery analysis: 16K target-market companies that recently stopped using a comparable platform, showed no detected replacement, and were not already covered by an active sales motion. The cohort validated 97% cold and sized to $960K-$3M annualized New MRR.</p>
 
 <div class="meta-row">
   <span><strong>Role:</strong> Sole analyst — hypothesis, sizing, validation, write-up</span>
@@ -48,8 +48,8 @@ flowchart TB
   Filter2 --> Filter3[Coverage gate: no active sales motion]
   Filter3 --> Filter4[Customer gate: not already active]
   Filter4 --> Filter5[Activity gate: no recent sales activity]
-  Filter5 --> Output[Prioritized cold cohort]
-  Output --> Sizing[Opportunity sizing]
+  Filter5 --> Output[16K-company cold cohort]
+  Output --> Sizing[$960K-$3M annualized New MRR sizing]
   Output --> Viz[Quadrant chart: recency x tenure x segment]
 </pre>
 </section>
@@ -57,9 +57,9 @@ flowchart TB
 <section>
 <h2>What I built</h2>
 <ul>
-  <li><strong>Cohort definition query:</strong> target-market companies with a recently dropped comparable technology and no detected replacement in the same category.</li>
-  <li><strong>Coverage scrub:</strong> removed companies that already had active opportunities, active customer status, or recent sales activity.</li>
-  <li><strong>Sizing model:</strong> addressable market estimate times expected qualification, win-rate, and average contract-value assumptions, with a sensitivity band.</li>
+  <li><strong>Cohort definition query:</strong> 16K target-market companies with a recently dropped comparable technology and no detected replacement in the same category.</li>
+  <li><strong>3-gate coverage scrub:</strong> removed companies that already had active opportunities, active customer status, or recent sales activity.</li>
+  <li><strong>Sizing model:</strong> addressable market estimate times expected qualification, win-rate, and average contract-value assumptions, with a $960K-$3M annualized New MRR sensitivity band.</li>
   <li><strong>HTML findings document</strong> with a quadrant chart segmenting the cohort by:
     <ul>
       <li>X-axis: how recently the comparable tool disappeared</li>
@@ -76,7 +76,7 @@ flowchart TB
 <p>Worked with my manager to pressure-test the signal:</p>
 <ul>
   <li>Added a tenure floor to filter out transient detection noise.</li>
-  <li>Validated the pattern on historical outcomes and confirmed the scrub produced a &gt;95% cold-account cohort.</li>
+  <li>Validated the pattern on historical outcomes and confirmed the scrub produced a 97% cold-account cohort.</li>
   <li>Checked for obvious seasonality and category-mix bias before recommending operational use.</li>
 </ul>
 </section>
@@ -84,8 +84,8 @@ flowchart TB
 <section>
 <h2>Impact</h2>
 <ul>
-  <li>Converted a noisy technographics field into a defensible, coverage-aware sales signal with &gt;95% cold-account validation.</li>
-  <li>Created a sizing framework that separated headline audience size from realistically actionable opportunity.</li>
+  <li>Converted a noisy technographics field into a defensible, coverage-aware sales signal with 97% cold-account validation.</li>
+  <li>Created a sizing framework that separated the 16K-company headline audience from a realistically actionable $960K-$3M annualized New MRR opportunity.</li>
   <li>Prepared the analysis for sales-team rollout before organizational priorities changed.</li>
   <li>Documented a reusable methodology for future comparable-tool churn studies.</li>
 </ul>

@@ -24,7 +24,7 @@
 <div class="container">
 
 <h1>NAICS Whitespace Explorer</h1>
-<p class="subtitle">Flask dashboard + static export ranking hundreds of industry segments on market size, reachable audience, win-rate signal, sales coverage, and outlier-deal potential. Turned vertical prioritization into a repeatable planning framework.</p>
+<p class="subtitle">Flask dashboard + static export ranking 309 industry segments on market size, reachable audience, win-rate signal, sales coverage, and outlier-deal potential. Turned vertical prioritization into a repeatable planning framework.</p>
 
 <div class="meta-row">
   <span><strong>Role:</strong> Sole designer / builder</span>
@@ -65,8 +65,8 @@ flowchart TB
 <section>
 <h2>What I built</h2>
 <ul>
-  <li><strong>Pipeline-active industry universe</strong> built from won opportunities, open pipeline, and outbound activity rather than a static hand-curated list.</li>
-  <li><strong>Whitespace flag:</strong> segments with low sales coverage and enough reachable audience to support action.</li>
+  <li><strong>309-segment industry universe</strong> built from won opportunities, open pipeline, and outbound activity rather than a 43-segment hand-curated list.</li>
+  <li><strong>Whitespace flag:</strong> segments with below-median sales coverage and 100+ reachable prospects to support action.</li>
   <li><strong>Outlier-deal detection:</strong> Tukey's IQR fence flags segments with unusually large wins while avoiding overreaction to sparse data.</li>
   <li><strong>Revenue fallback logic:</strong> layered estimates keep sparse segments visible without letting one deal dominate the ranking.</li>
   <li><strong>Sales-cohort filtering:</strong> enforced in SQL so every metric reflects the same business motion.</li>
@@ -94,15 +94,16 @@ def detect_outlier_deals(deal_amounts):
 <section>
 <h2>Impact</h2>
 <ul>
-  <li>Produced an executive-ready industry prioritization recommendation grounded in market size, reachability, sales coverage, revenue density, attach behavior, and outlier-deal potential.</li>
-  <li>Created a reusable scoring layer that downstream audience-building and planning workflows could consume.</li>
+  <li>Produced an executive-ready 6-vertical prioritization recommendation grounded in market size, reachability, sales coverage, revenue density, attach behavior, and outlier-deal potential.</li>
+  <li>Added quantified vertical readouts such as 488 outlier-deal flags and $924K expected revenue in one retail segment, 411 outlier-deal flags in live entertainment, $2,255 average revenue in SaaS, 22.8% transactional intent in financial services, and $2,391 revenue density per account in information.</li>
+  <li>Created a reusable scoring layer that downstream audience-building and planning workflows could consume, including a 38.32% SOM/SAM planning ratio.</li>
   <li>Received director-level recognition for turning a complex prioritization problem into a clear stakeholder walkthrough.</li>
 </ul>
 </section>
 
 <section>
 <h2>What I'd do differently</h2>
-<p>I'd build the dashboard data layer as a single materialized table from day 1 instead of running separate per-metric queries on each request. The static export solved stakeholder access, but a single fact table would be faster and easier for downstream tools to reuse.</p>
+<p>I'd build the dashboard data layer as a single materialized table from day 1 instead of running separate per-metric queries on each request. The static export solved stakeholder access, but a single fact table would reduce the roughly 12-second page load and make the metrics easier for downstream tools to reuse.</p>
 </section>
 
 <a href="../index.html" class="back-link">&larr; Back to portfolio</a>

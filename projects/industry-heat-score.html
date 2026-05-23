@@ -24,7 +24,7 @@
 <div class="container">
 
 <h1>Industry Heat Score</h1>
-<p class="subtitle">A monthly refreshed industry ranking that changes <em>what enters</em> the lead queue, not who reps prioritize within it. The model shifts list-building upstream toward industries with stronger customer durability and acquisition momentum.</p>
+<p class="subtitle">A monthly refreshed industry ranking that changes <em>what enters</em> the lead queue, not who reps prioritize within it. The model shifts list-building upstream toward industries with stronger customer durability and acquisition momentum, with $1M-$8M modeled annualized New MRR upside.</p>
 
 <div class="meta-row">
   <span><strong>Role:</strong> Sole modeler &amp; PRD author</span>
@@ -49,7 +49,7 @@
 
 <pre class="mermaid">
 flowchart LR
-  Universe[Industry universe] --> AFloor["A-floor: customer durability filter"]
+  Universe[~300 industry codes] --> AFloor["A-floor: customer durability filter"]
   AFloor --> BRank[B-rank: acquisition momentum scoring]
   BRank --> Output[Ranked target list + expected conversion signal]
   Output --> SQL[List-build filter]
@@ -60,7 +60,7 @@ flowchart LR
 
 <section>
 <h2>Why Industry-Level</h2>
-<p><strong>Industry-level for v1, account-level for v2:</strong> the industry universe was small enough to score, audit by inspection, and route directly into existing list-building logic. If industry-level signal proved weak, the audit would still de-risk any future account-level scoring work.</p>
+<p><strong>Industry-level for v1, account-level for v2:</strong> the roughly 300-code industry universe was small enough to score, audit by inspection, and route directly into existing list-building logic. If industry-level signal proved weak, the audit would still de-risk any future account-level scoring work.</p>
 <p><strong>Build vs buy rationale:</strong> the custom approach used proprietary internal customer outcomes rather than generic web-behavior intent. That made it more directly tied to the business motion and easier to validate against historical performance.</p>
 </section>
 
@@ -68,7 +68,7 @@ flowchart LR
 <h2>What I built</h2>
 <ul>
   <li><strong>Full PRD</strong>: one-paragraph version, problem framing, scope/out-of-scope/non-goals, methodology, A-floor + B-rank construction, backtest design, sprint plan, integration plan, risks &amp; mitigations</li>
-  <li><strong>Gate-first sprint plan:</strong> initial audit checked coverage, sample size, and between-segment lift before committing to a full build.</li>
+  <li><strong>Gate-first sprint plan:</strong> initial audit checked coverage, sample size, and between-segment lift before committing to a full build: 70%+ coverage, 30+ viable codes, and 1.5x+ top-vs-bottom lift.</li>
   <li><strong>Audit harness:</strong> repeatable Python workflow that runs the validation checks, writes artifacts, and prints pass/fail results.</li>
   <li><strong>Companion model card:</strong> clarified how upstream list-building and downstream rep triage models complement each other.</li>
 </ul>
@@ -77,8 +77,8 @@ flowchart LR
 <section>
 <h2>Impact</h2>
 <ul>
-  <li>Modeled upside from shifting lead mix toward higher-converting industries at constant lead volume.</li>
-  <li>Provided an internal-signal alternative to a generic third-party intent purchase.</li>
+  <li>Modeled annualized New MRR upside from shifting lead mix toward higher-converting industries at constant lead volume: $1M-$3M conservative and $2M-$8M optimistic.</li>
+  <li>Provided an internal-signal alternative to a generic third-party intent purchase, avoiding a likely $100K-$300K annual platform spend.</li>
   <li>Project framing — "upstream of the rep, not the rep" — became a reusable pattern for B2B GTM prioritization questions.</li>
 </ul>
 </section>

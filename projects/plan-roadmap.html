@@ -24,7 +24,7 @@
 <div class="container">
 
 <h1>PlanRoadmap — Sales Play Sizing Pipeline</h1>
-<p class="subtitle">A CSV-in/CSV-out pipeline that takes leadership-defined sales plays and computes addressable market, reachable audience, expected qualification, revenue assumptions, win-rate signal, and opportunity size for each.</p>
+<p class="subtitle">A CSV-in/CSV-out pipeline that takes 53 leadership-defined sales plays and computes addressable market, reachable audience, expected qualification, revenue assumptions, win-rate signal, and opportunity size for each.</p>
 
 <div class="meta-row">
   <span><strong>Role:</strong> Sole designer / builder / debugger</span>
@@ -34,7 +34,7 @@
 
 <section>
 <h2>Problem</h2>
-<p>Sales leadership defined a large set of plays across intent, technology, and vertical themes. Each play needed quantified sizing across addressable market, reachable audience, revenue assumptions, win-rate signal, and opportunity size. Manual sizing would not scale.</p>
+<p>Sales leadership defined 53 plays across intent, technology, and vertical themes. Each play needed quantified sizing across addressable market, reachable audience, revenue assumptions, win-rate signal, and opportunity size. Manual sizing would not scale.</p>
 <p>The input data was messy: some plays had explicit filter columns, while others only had descriptive headlines that needed to be parsed into structured filters.</p>
 </section>
 
@@ -44,7 +44,7 @@
 
 <pre class="mermaid">
 flowchart TB
-  CSV[Input CSV: sales plays] --> Classifier[5-way classifier]
+  CSV[Input CSV: 53 sales plays] --> Classifier[5-way classifier]
   Classifier --> Intent[Intent topic mapping]
   Classifier --> Tech[Technology lookup]
   Classifier --> Industry[NAICS prefix from industry name]
@@ -63,13 +63,13 @@ flowchart TB
 <h2>What I built</h2>
 <ul>
   <li><strong>5-way play classifier:</strong> Intent / Tech / Industry / Industry+Tech / Headline-parsed ICP×Tech</li>
-  <li><strong>Warehouse-backed technology lookup</strong> replacing a brittle hand-curated mapping file.</li>
-  <li><strong>Wildcard parent-brand expansion</strong> so broad product families mapped to all relevant tracked variants instead of a single narrow match.</li>
-  <li><strong>Fallback logic:</strong> low-signal plays fall back to motion-level averages so sparse history does not create false precision.</li>
+  <li><strong>Warehouse-backed technology lookup</strong> across 32K tracked technologies, replacing a brittle 200-row hand-curated mapping file.</li>
+  <li><strong>Wildcard parent-brand expansion</strong> so broad product families mapped to all relevant tracked variants instead of a single narrow match; one broad-product play moved from 398 to 192,904 addressable companies after expansion.</li>
+  <li><strong>Fallback logic:</strong> low-signal plays fall back to motion-level averages so sparse history does not create false precision: $523.71 average AOV, $382.50 median AOV, 24.06% win rate, and 38.32% SOM/SAM ratio.</li>
   <li><strong>Outlier-deal alert</strong> appended to the notes column when a play's historical revenue assumptions were likely distorted by unusually large wins.</li>
   <li><strong>Referenced-lookup notes</strong> in the output for reviewer auditability.</li>
   <li><strong>Intent topic resolution layer</strong> maps business-language play names to governed warehouse topics.</li>
-  <li><strong>Debugging summary</strong> documenting silent-failure patterns and fixes as a teaching artifact for the next analyst.</li>
+  <li><strong>Debugging summary</strong> documenting 19 silent-failure patterns and fixes as a teaching artifact for the next analyst.</li>
 </ul>
 </section>
 
@@ -85,9 +85,9 @@ flowchart TB
 <section>
 <h2>Impact</h2>
 <ul>
-  <li>Sized the large majority of leadership-defined plays end-to-end; remaining gaps reflected missing upstream signal rather than pipeline failure.</li>
-  <li>Batch runtime reached a 5-minute warm run, fast enough for repeated planning cycles rather than one-off analysis.</li>
-  <li>Live-computed fallback assumptions became reusable across other sizing work.</li>
+  <li>Sized 50 of 53 leadership-defined plays end-to-end; the 3 remaining gaps reflected missing upstream signal rather than pipeline failure.</li>
+  <li>Batch runtime reached roughly 5 minutes warm and 12 minutes cold for all 53 plays, fast enough for repeated planning cycles rather than one-off analysis.</li>
+  <li>Live-computed fallback assumptions became reusable across other sizing work: $523.71 average AOV, 24.06% win rate, and 38.32% SOM/SAM ratio.</li>
   <li>The debugging summary became the guide for extending the sizing pattern safely.</li>
 </ul>
 </section>

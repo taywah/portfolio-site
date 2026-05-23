@@ -24,7 +24,7 @@
 <div class="container">
 
 <h1>Audience Funnel Builder</h1>
-<p class="subtitle">A Streamlit + Vertex AI dashboard that lets sales partners define an audience, run a governed market-sizing and persona-validation workflow, and export a standardized sales-ready file with natural-language firmographic recommendations.</p>
+<p class="subtitle">A Streamlit + Vertex AI dashboard that lets sales partners define an audience, run a governed market-sizing and persona-validation workflow, and export a 77-column standardized sales-ready file with natural-language firmographic recommendations.</p>
 
 <div class="meta-row">
   <span><strong>Role:</strong> Sole designer / builder / operator</span>
@@ -40,7 +40,7 @@
 
 <section>
 <h2>Approach</h2>
-<p>Build a Streamlit dashboard that runs a governed BigQuery workflow, calls Vertex AI for natural-language parsing of the ask, surfaces a side-by-side firmographic comparison against a customer benchmark, and emits a standardized export directly.</p>
+<p>Build a Streamlit dashboard that runs a 3-stage BigQuery workflow, calls Vertex AI for natural-language parsing of the ask, surfaces a side-by-side firmographic comparison against a customer benchmark, and emits a standardized export directly.</p>
 
 <pre class="mermaid">
 flowchart LR
@@ -51,17 +51,17 @@ flowchart LR
   BQ3 --> Compare[Compare vs customer benchmark]
   Compare --> Gemini[Vertex AI: parse intent + recommend filters]
   Gemini --> Streamlit
-  Streamlit --> Export[Standardized sales export]
+  Streamlit --> Export[77-column sales export]
 </pre>
 </section>
 
 <section>
 <h2>What I built</h2>
 <ul>
-  <li><strong>BigQuery pipeline:</strong> multi-stage workflow for market sizing, existing-coverage removal, and persona validation using governed source tables and reusable filters.</li>
+  <li><strong>BigQuery pipeline:</strong> 3-stage workflow for market sizing, existing-coverage removal, and persona validation using governed source tables and reusable filters.</li>
   <li><strong>Vertex AI integration:</strong> natural-language parsing converts a business request into structured targeting inputs, then summarizes firmographic differences and filter recommendations.</li>
   <li><strong>Plotly comparison views:</strong> side-by-side distribution of prospect cohort vs customer benchmark across revenue, employee count, industry, and geography.</li>
-  <li><strong>Standardized sales export:</strong> generated a clean, operations-ready file so users did not need to manually reformat every audience pull.</li>
+  <li><strong>77-column standardized sales export:</strong> generated a clean, operations-ready file so users did not need to manually reformat every audience pull.</li>
   <li><strong>Multipage Streamlit app:</strong> overview, pipeline builder, and customer-profile views for both self-serve execution and QA.</li>
   <li><strong>Productionization path:</strong> documented deployment, access, and data-refresh considerations for an internal app.</li>
 </ul>
@@ -78,9 +78,9 @@ flowchart LR
 <section>
 <h2>Impact</h2>
 <ul>
-  <li>Shipped multiple iterations that added new targeting filters, improved fit scoring, and made audience pulls easier to audit.</li>
+  <li>Shipped 3 iterations across Q1-Q2 2026, adding new targeting filters, improved fit scoring, and clearer auditability for audience pulls.</li>
   <li>Created a shared operating channel for business partners, reducing ad hoc meetings and clarifying request intake.</li>
-  <li>Mentored an operations partner through the workflow so they could self-serve routine audience pulls.</li>
+  <li>Mentored an operations partner through the workflow so they could self-serve routine audience pulls instead of routing every request through Data Science.</li>
   <li>Received director-level recognition for making a previously analyst-dependent workflow visible and usable for the sales organization.</li>
 </ul>
 </section>

@@ -24,7 +24,7 @@
 <div class="container">
 
 <h1>CRM Data Quality</h1>
-<p class="subtitle">Cross-functional CRM data-quality initiatives that improved account enrichment, standardized operational handoffs, and codified a reusable activity-attribution fix for future sales analyses.</p>
+<p class="subtitle">Cross-functional CRM data-quality initiatives: 655 account websites cleaned, 6.5K accounts phone-type backfilled, and a reusable activity-attribution fix codified for future sales analyses.</p>
 
 <div class="meta-row">
   <span><strong>Role:</strong> Discoverer, escalator, owner of the reusable rule</span>
@@ -43,16 +43,16 @@
 
 <h3>Outcome</h3>
 <ul>
-  <li>Hundreds of accounts now have corrected websites driving downstream firmographic and industry matches.</li>
-  <li>QA back-checks confirmed the process did not overwrite already-correct records.</li>
-  <li>Stale accounts were flagged for follow-up cleanup.</li>
+  <li>655 accounts now have corrected websites driving downstream firmographic and industry matches.</li>
+  <li>21 already-correct rows passed a QA back-check, confirming the process did not overwrite good records.</li>
+  <li>1 stale account was flagged for follow-up cleanup.</li>
   <li>Pattern reusable for future quarterly cleanups.</li>
 </ul>
 </section>
 
 <section>
 <h2>The Phone-Type Backfill</h2>
-<p>Operations needed a launched-account cohort re-enriched with multiple phone-number types and formatted to a standard CRM upload template.</p>
+<p>Operations needed a 6.5K-account launched cohort re-enriched with three phone-number types and formatted to a standard CRM upload template.</p>
 <p>I scoped the enrichment, formatted the output, and coordinated with engineering on validation rules and update behavior so the upload could proceed without corrupting existing fields.</p>
 </section>
 
@@ -63,7 +63,7 @@
 <p>While reviewing a reactivation contact list, I noticed several accounts showing "no recent contact" in analytical queries even though business partners had evidence of recent outreach.</p>
 
 <h3>Root cause</h3>
-<p>The root cause was a common CRM integration pattern: some third-party activities were attached at the contact level but not reliably populated at the account level. Account-only activity scrubs therefore undercounted recent outreach.</p>
+<p>The root cause was a common CRM integration pattern: some third-party activities were attached at the contact level but not reliably populated at the account level. Account-only activity scrubs therefore undercounted recent outreach by roughly 20%-50% in affected workflows.</p>
 
 <h3>Diagnostic</h3>
 
@@ -79,7 +79,7 @@ flowchart LR
 
 <h3>Resolution path</h3>
 <ol>
-  <li>Reproduced the issue with concrete examples that showed recent activity present at contact grain but missing from account-grain queries.</li>
+  <li>Reproduced the issue with 10 anonymized examples that showed recent activity present at contact grain but missing from account-grain queries.</li>
   <li>Escalated the issue with a clear explanation of why it affected downstream sales analytics.</li>
   <li>Routed the upstream integration fix through the appropriate operations owner.</li>
   <li>In parallel, codified the workaround as a reusable workspace rule so future activity scrubs use both direct account keys and contact-to-account rollups.</li>
@@ -115,8 +115,8 @@ recently_contacted_accounts AS (
 <section>
 <h2>Impact</h2>
 <ul>
-  <li>Corrected account enrichment inputs so downstream firmographic and industry matches were more reliable.</li>
-  <li>Backfilled account phone-type coverage in a format operations could upload safely.</li>
+  <li>Corrected 655 account-enrichment inputs so downstream firmographic and industry matches were more reliable.</li>
+  <li>Backfilled phone-type coverage for 6.5K accounts in a format operations could upload safely.</li>
   <li>Submitted the upstream integration issue while shipping a local analytical workaround immediately.</li>
   <li>Pattern documented at the workspace level so future analysts do not re-introduce the gap.</li>
 </ul>
