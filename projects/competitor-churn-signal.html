@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Comparable-Tool Churn Signal - Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>Comparable-Tool Churn Signal</h1>
+<p class="subtitle">A signal-discovery analysis for identifying companies that recently stopped using a comparable platform, showed no detected replacement, and were not already covered by an active sales motion.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole analyst — hypothesis, sizing, validation, write-up</span>
+  <span><strong>Stack:</strong> BigQuery, third-party technographics, HTML findings doc, Plotly quadrant chart</span>
+  <span><strong>Period:</strong> 2026 Q2</span>
+</div>
+
+<section>
+<h2>Problem &amp; hypothesis</h2>
+<p>A third-party technographics source exposed enough historical usage metadata to test a simple hypothesis: companies that recently stopped using a comparable platform, with no replacement detected and no active sales coverage, may represent a quiet migration-intent signal.</p>
+</section>
+
+<section>
+<h2>Approach</h2>
+
+<pre class="mermaid">
+flowchart TB
+  Tech[Technographics history] --> Cohort[Companies with recent comparable-tool drop]
+  Cohort --> Filter1[No replacement tool detected]
+  Filter1 --> Filter2[Target-market fit]
+  Filter2 --> Filter3[Coverage gate: no active sales motion]
+  Filter3 --> Filter4[Customer gate: not already active]
+  Filter4 --> Filter5[Activity gate: no recent sales activity]
+  Filter5 --> Output[Prioritized cold cohort]
+  Output --> Sizing[Opportunity sizing]
+  Output --> Viz[Quadrant chart: recency x tenure x segment]
+</pre>
+</section>
+
+<section>
+<h2>What I built</h2>
+<ul>
+  <li><strong>Cohort definition query:</strong> target-market companies with a recently dropped comparable technology and no detected replacement in the same category.</li>
+  <li><strong>Coverage scrub:</strong> removed companies that already had active opportunities, active customer status, or recent sales activity.</li>
+  <li><strong>Sizing model:</strong> addressable market estimate times expected qualification, win-rate, and average contract-value assumptions, with a sensitivity band.</li>
+  <li><strong>HTML findings document</strong> with a quadrant chart segmenting the cohort by:
+    <ul>
+      <li>X-axis: how recently the comparable tool disappeared</li>
+      <li>Y-axis: how long the company had used that tool</li>
+      <li>Color: product category or segment</li>
+      <li>Drill-down: target profile and industry</li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<section>
+<h2>Validation</h2>
+<p>Worked with my manager to pressure-test the signal:</p>
+<ul>
+  <li>Added a tenure floor to filter out transient detection noise.</li>
+  <li>Validated the pattern on historical outcomes and confirmed the scrub produced a &gt;95% cold-account cohort.</li>
+  <li>Checked for obvious seasonality and category-mix bias before recommending operational use.</li>
+</ul>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Converted a noisy technographics field into a defensible, coverage-aware sales signal with &gt;95% cold-account validation.</li>
+  <li>Created a sizing framework that separated headline audience size from realistically actionable opportunity.</li>
+  <li>Prepared the analysis for sales-team rollout before organizational priorities changed.</li>
+  <li>Documented a reusable methodology for future comparable-tool churn studies.</li>
+</ul>
+</section>
+
+<section>
+<h2>Lesson</h2>
+<p>The cheapest intent signal is often a comparable-tool churn signal, but only if you can prove the cohort is not already covered. The scrub is the rule-out, not the find. Without it, a large headline cohort can still be operationally useless.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

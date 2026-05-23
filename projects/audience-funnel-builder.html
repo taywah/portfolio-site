@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Audience Funnel Builder — Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>Audience Funnel Builder</h1>
+<p class="subtitle">A Streamlit + Vertex AI dashboard that lets sales partners define an audience, run a governed market-sizing and persona-validation workflow, and export a standardized sales-ready file with natural-language firmographic recommendations.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole designer / builder / operator</span>
+  <span><strong>Stack:</strong> Streamlit, BigQuery, Vertex AI / Gemini, GCP, Plotly</span>
+  <span><strong>Period:</strong> 2025 Q4 — 2026 Q2</span>
+</div>
+
+<section>
+<h2>Problem</h2>
+<p>A sales organization had a recurring need: define a target audience, compare it to high-value customer patterns, remove already-covered accounts, validate likely buyer personas, and export the results in a format operations teams could upload cleanly.</p>
+<p>The existing process was spreadsheet-driven and analyst-dependent. Each pull required manual translation, inconsistent formatting, and a turnaround cycle that kept Data Science in the middle of every audience request.</p>
+</section>
+
+<section>
+<h2>Approach</h2>
+<p>Build a Streamlit dashboard that runs a governed BigQuery workflow, calls Vertex AI for natural-language parsing of the ask, surfaces a side-by-side firmographic comparison against a customer benchmark, and emits a standardized export directly.</p>
+
+<pre class="mermaid">
+flowchart LR
+  User[User picks ICP / industry / filters] --> Streamlit[Streamlit UI]
+  Streamlit --> BQ1[BQ Stage 1: TAM]
+  BQ1 --> BQ2[BQ Stage 2: Existing-coverage scrub]
+  BQ2 --> BQ3[BQ Stage 3: Persona validation]
+  BQ3 --> Compare[Compare vs customer benchmark]
+  Compare --> Gemini[Vertex AI: parse intent + recommend filters]
+  Gemini --> Streamlit
+  Streamlit --> Export[Standardized sales export]
+</pre>
+</section>
+
+<section>
+<h2>What I built</h2>
+<ul>
+  <li><strong>BigQuery pipeline:</strong> multi-stage workflow for market sizing, existing-coverage removal, and persona validation using governed source tables and reusable filters.</li>
+  <li><strong>Vertex AI integration:</strong> natural-language parsing converts a business request into structured targeting inputs, then summarizes firmographic differences and filter recommendations.</li>
+  <li><strong>Plotly comparison views:</strong> side-by-side distribution of prospect cohort vs customer benchmark across revenue, employee count, industry, and geography.</li>
+  <li><strong>Standardized sales export:</strong> generated a clean, operations-ready file so users did not need to manually reformat every audience pull.</li>
+  <li><strong>Multipage Streamlit app:</strong> overview, pipeline builder, and customer-profile views for both self-serve execution and QA.</li>
+  <li><strong>Productionization path:</strong> documented deployment, access, and data-refresh considerations for an internal app.</li>
+</ul>
+</section>
+
+<section>
+<h2>Code excerpt — recommendation pattern</h2>
+<pre><code>def recommend_filters(user_request, cohort_profile, customer_benchmark):
+    structured_request = parse_request(user_request)
+    comparison = compare_distributions(cohort_profile, customer_benchmark)
+    return generate_recommendation(structured_request, comparison)</code></pre>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Shipped multiple iterations that added new targeting filters, improved fit scoring, and made audience pulls easier to audit.</li>
+  <li>Created a shared operating channel for business partners, reducing ad hoc meetings and clarifying request intake.</li>
+  <li>Mentored an operations partner through the workflow so they could self-serve routine audience pulls.</li>
+  <li>Received director-level recognition for making a previously analyst-dependent workflow visible and usable for the sales organization.</li>
+</ul>
+</section>
+
+<section>
+<h2>What I'd do differently</h2>
+<p>If I were building v2 from scratch I'd separate the data pipeline from the Streamlit layer earlier and materialize the most expensive persona filters on a schedule. The first version optimized for speed to stakeholder feedback; the next version should optimize for runtime consistency and easier downstream reuse.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

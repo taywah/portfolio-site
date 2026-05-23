@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reactivation Pipeline + Match Recovery - Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>Reactivation Pipeline + Match Recovery</h1>
+<p class="subtitle">A reactivation pipeline plus data-quality recovery: detected an enrichment matching failure, restored affected firmographics, wrote a blameless postmortem, and codified the prevention pattern.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole designer, owner of the postmortem and recovery</span>
+  <span><strong>Stack:</strong> BigQuery, Python, Cursor workspace rules, shared SQL patterns</span>
+  <span><strong>Period:</strong> 2026 Q1-Q2</span>
+</div>
+
+<section>
+<h2>Problem: The Pipeline</h2>
+<p>The business had dormant customer and closed-lost cohorts with no systematic reactivation motion. We needed a pipeline that produced a ranked, scrubbed, contact-grain export for sales follow-up.</p>
+</section>
+
+<section>
+<h2>Problem: The Bug</h2>
+<p>The first run exposed a serious data-quality problem: a subset of accounts had firmographic fields from an unrelated company. The customer-to-account mapping was intact, but the enrichment columns were wrong.</p>
+</section>
+
+<section>
+<h2>Root Cause</h2>
+<p>The root cause was a common SQL trap: upstream enrichment data represented missing URLs inconsistently, and the matching logic treated one form of "blank" as valid. That allowed unrelated firmographics to pass through a deduplication step and appear on affected customer records.</p>
+
+<p>I removed the faulty matching path, added explicit guardrails for blank keys, and moved the corrected pattern into reusable SQL so the same class of bug would be caught before future merges.</p>
+
+<pre class="mermaid">
+flowchart TB
+  Source[Inconsistent blank-key source data] --> Match[Matching logic]
+  Match --> Bad[Wrong enrichment attached]
+  Bad --> Detect[Diagnostic query]
+  Detect --> Fix[Guardrail + reusable SQL pattern]
+</pre>
+</section>
+
+<section>
+<h2>What I Built: Recovery</h2>
+<ul>
+  <li><strong>Diagnostic query:</strong> identified affected rows and confirmed the core customer-to-account mapping was trustworthy while enrichment columns were corrupted.</li>
+  <li><strong>Recovery script:</strong> computed a stronger alternate matching key for each affected account, rejoined vendor firmographics, and backfilled recovered industry, revenue, and employee fields where confidence was sufficient.</li>
+  <li><strong>Code hardening:</strong> removed the faulty matching path and added explicit guardrails for blank enrichment keys.</li>
+  <li><strong>Workspace rule:</strong> always-on guardrail documenting the failure pattern with safe and unsafe examples plus a diagnostic signature for future regressions.</li>
+  <li><strong>Shared SQL patterns:</strong> reusable, trust-tiered vendor joins and a monthly bridge data-quality audit.</li>
+  <li><strong>Postmortem:</strong> blameless write-up covering what went wrong, what was still trustworthy, what was recovered, and how future recurrence would be caught.</li>
+</ul>
+</section>
+
+<section>
+<h2>Walk-through Example</h2>
+<table style="font-size:14px; border-collapse:collapse; width:100%; margin: 8px 0;">
+<tr style="text-align:left; border-bottom: 1px solid var(--rule);">
+  <th style="padding:6px 4px;">Step</th><th style="padding:6px 4px;">Source</th><th style="padding:6px 4px;">Value</th>
+</tr>
+<tr><td style="padding:6px 4px;">Customer company</td><td style="padding:6px 4px;"><code>customer table</code></td><td style="padding:6px 4px;">Customer A</td></tr>
+<tr><td style="padding:6px 4px;">Customer URL</td><td style="padding:6px 4px;"><code>customer URL field</code></td><td style="padding:6px 4px;"><code>https://customer.example.com</code></td></tr>
+<tr><td style="padding:6px 4px;">Enrichment key</td><td style="padding:6px 4px;"><code>vendor bridge</code></td><td style="padding:6px 4px;"><strong>blank key</strong> &larr; trigger</td></tr>
+<tr><td style="padding:6px 4px;">Bad output</td><td style="padding:6px 4px;">Export</td><td style="padding:6px 4px;">Unrelated company, incorrect industry code</td></tr>
+<tr><td style="padding:6px 4px;"><strong>Recovered</strong></td><td style="padding:6px 4px;">alternate matching key</td><td style="padding:6px 4px;"><strong>Corrected parent company</strong>, industry, revenue, and employee count</td></tr>
+</table>
+<p>The recovered firmographics restored the corrected parent company without manual customer research.</p>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Recovered 82% of affected firmographics without manual account research.</li>
+  <li>The workspace rule caught the same blank-key failure pattern in later query reviews before merge.</li>
+  <li>The shared SQL patterns became the single source of truth for trust-tiered vendor joins across related workflows.</li>
+  <li>Postmortem and recovery script became reusable templates for future vendor-data regressions.</li>
+</ul>
+</section>
+
+<section>
+<h2>Lesson</h2>
+<p>Empty-string handling is the new null-handling. Every SQL pattern that joins on user-typed or imported URL data needs to check both. A good postmortem is also a leadership signal: the team trusts you with bigger bugs after you handle one well.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

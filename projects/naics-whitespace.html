@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NAICS Whitespace Explorer — Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>NAICS Whitespace Explorer</h1>
+<p class="subtitle">Flask dashboard + static export ranking hundreds of industry segments on market size, reachable audience, win-rate signal, sales coverage, and outlier-deal potential. Turned vertical prioritization into a repeatable planning framework.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole designer / builder</span>
+  <span><strong>Stack:</strong> Flask, BigQuery, pandas, Plotly, static export</span>
+  <span><strong>Period:</strong> 2025 Q3 — 2026 Q2</span>
+</div>
+
+<section>
+<h2>Problem</h2>
+<p>The sales team had a manually curated industry list that was static, hard to defend, and disconnected from observed pipeline behavior. Leadership needed a clearer way to identify high-opportunity and under-covered segments without relying on anecdotal prioritization.</p>
+</section>
+
+<section>
+<h2>Approach</h2>
+<p>Expand the scoring universe from a hand-picked list to a broad set of pipeline-active industry codes. Score each segment on a consistent metric set. Define <em>whitespace</em> mechanically using low coverage plus meaningful reachable audience. Detect outlier-deal potential via Tukey IQR so segments with high-value wins get surfaced even when medians are modest.</p>
+
+<pre class="mermaid">
+flowchart TB
+  Wins[Won opportunities] --> Universe
+  Funnel[Pipeline opportunities] --> Universe
+  Touches[Outbound activity] --> Universe[Pipeline-active industry universe]
+  Universe --> TAM[Market-size estimate]
+  Universe --> SOM[Reachable audience estimate]
+  Universe --> WR[Win-rate signal]
+  Universe --> OV[Median &amp; Avg Order Value]
+  Universe --> Cov[Coverage Rate = Touched / SOM]
+  Universe --> Outliers["Outlier-deal flag via Tukey 1.5xIQR fence"]
+  TAM --> Flask[Flask dashboard at localhost:8510]
+  SOM --> Flask
+  WR --> Flask
+  OV --> Flask
+  Cov --> Flask
+  Outliers --> Flask
+  Flask --> Static[Static stakeholder export]
+</pre>
+</section>
+
+<section>
+<h2>What I built</h2>
+<ul>
+  <li><strong>Pipeline-active industry universe</strong> built from won opportunities, open pipeline, and outbound activity rather than a static hand-curated list.</li>
+  <li><strong>Whitespace flag:</strong> segments with low sales coverage and enough reachable audience to support action.</li>
+  <li><strong>Outlier-deal detection:</strong> Tukey's IQR fence flags segments with unusually large wins while avoiding overreaction to sparse data.</li>
+  <li><strong>Revenue fallback logic:</strong> layered estimates keep sparse segments visible without letting one deal dominate the ranking.</li>
+  <li><strong>Sales-cohort filtering:</strong> enforced in SQL so every metric reflects the same business motion.</li>
+  <li><strong>Static stakeholder export:</strong> made the dashboard shareable with leaders who did not need direct warehouse access.</li>
+  <li><strong>Sub-industry aggregation:</strong> related industry codes roll up cleanly with counts summed and rates weighted.</li>
+</ul>
+</section>
+
+<section>
+<h2>Code excerpt — Tukey outlier detection</h2>
+<pre><code># For each industry segment with 3+ wins, compute Tukey IQR fence
+# and flag any deal above Q3 + 1.5*IQR as an outlier.
+
+def detect_outlier_deals(deal_amounts):
+    if len(deal_amounts) &lt; 3:
+        # Fallback to global 95th percentile for sparse segments
+        return [d for d in deal_amounts if d &gt; GLOBAL_P95]
+    q1 = np.percentile(deal_amounts, 25)
+    q3 = np.percentile(deal_amounts, 75)
+    iqr = q3 - q1
+    threshold = q3 + 1.5 * iqr
+    return [d for d in deal_amounts if d &gt; threshold]</code></pre>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Produced an executive-ready industry prioritization recommendation grounded in market size, reachability, sales coverage, revenue density, attach behavior, and outlier-deal potential.</li>
+  <li>Created a reusable scoring layer that downstream audience-building and planning workflows could consume.</li>
+  <li>Received director-level recognition for turning a complex prioritization problem into a clear stakeholder walkthrough.</li>
+</ul>
+</section>
+
+<section>
+<h2>What I'd do differently</h2>
+<p>I'd build the dashboard data layer as a single materialized table from day 1 instead of running separate per-metric queries on each request. The static export solved stakeholder access, but a single fact table would be faster and easier for downstream tools to reuse.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

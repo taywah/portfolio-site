@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cursor Agent Skill Ecosystem — Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>Cursor Agent Skill Ecosystem</h1>
+<p class="subtitle">Production Cursor Agent Skills that turned recurring analyst workflows into governed, self-serve natural-language tools for business partners.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole skill author for a sales-focused data science team</span>
+  <span><strong>Stack:</strong> Cursor + MCP, BigQuery, Markdown skill docs, Python skill helpers</span>
+  <span><strong>Period:</strong> 2026 Q1 — Q2</span>
+</div>
+
+<section>
+<h2>Problem</h2>
+<p>Business partners had recurring data needs that funneled into Data Science: market sizing, prospect pulls, manager-review workbooks, standardized exports, snapshot publishing, and data-quality checks. Data Science was the bottleneck on every one-off.</p>
+<p>Worse: each request needed translation from business language into warehouse queries, scrub gates, and output formatting. That translation is doable, but it does not scale if every workflow depends on a data scientist.</p>
+</section>
+
+<section>
+<h2>Approach</h2>
+<p>Author <strong>Cursor Skills</strong> — <code>SKILL.md</code> files with scoped tool access, project context, and skill-specific data rules. Each skill is invokable by natural language and runs a governed workflow inside the user's Cursor session.</p>
+
+<pre class="mermaid">
+flowchart LR
+  User["Business user asks for a governed data workflow"] --> Cursor[Cursor agent]
+  Cursor --> SkillDetect[Skill detection]
+  SkillDetect --> WB[Workflow-specific SKILL.md]
+  WB --> BQMCP[BQ MCP: run sizing + scrub queries]
+  WB --> Helpers[Python skill helpers: export + validation]
+  WB --> Rules[Workspace rules: data-quality guardrails]
+  BQMCP --> Output[Sized cohort + standardized export]
+  Helpers --> Output
+  Rules --> Output
+</pre>
+</section>
+
+<section>
+<h2>Skills shipped</h2>
+<ul>
+  <li><strong>Market prioritization skill</strong> — context, metric definitions, and analysis rules for industry whitespace and planning workflows.</li>
+  <li><strong>Reactivation workflow skill</strong> — end-to-end sizing, exclusion gates, contact export, and data-quality checks for dormant-account motions.</li>
+  <li><strong>Play-sizing skill</strong> — classifies plays by intent, technology, industry, or combined themes and runs the correct sizing workflow.</li>
+  <li><strong>Standardized export skill</strong> — applies persona validation, ranking, enrichment, and schema checks before handoff.</li>
+  <li><strong>Manager-review skills</strong> — package review files, collect keep/dismiss decisions, and distribute cleaned outputs.</li>
+  <li><strong>Critical-pass skill</strong> — self-audit checklist for stakeholder-bound data deliverables.</li>
+  <li><strong>Insight-to-action skill</strong> — forcing function for turning analytical findings into leadership-ready recommendations.</li>
+</ul>
+</section>
+
+<section>
+<h2>Skill anatomy</h2>
+<p>Each skill is a single Markdown file with frontmatter and a structured body. Example structure:</p>
+
+<pre><code>---
+name: governed-workflow
+description: Run a recurring sales analytics workflow end-to-end ...
+---
+
+# Governed Workflow Skill
+
+## Triggers
+The user asks for a recurring sizing, export, or review workflow.
+
+## Inputs required
+- Segment or audience definition
+- Review and handoff target
+- Output destination
+
+## Steps
+1. Run sizing query from governed workflow context
+2. Apply exclusion gates and activity scrubs
+3. Run data-quality validation helpers
+4. Generate standardized export
+5. Run critical-pass self-audit
+
+## Related
+- workflow reference docs
+- reusable validation helpers
+- data-quality guardrail rules</code></pre>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Business partners could self-serve routine market sizing after onboarding.</li>
+  <li>Manager review cycles were codified end-to-end rather than recreated manually for every request.</li>
+  <li>The skill-authoring pattern was documented and adopted by a peer.</li>
+  <li>Recognized internally as an AI-first practitioner.</li>
+</ul>
+</section>
+
+<section>
+<h2>Lesson</h2>
+<p>The right abstraction for AI tooling at work is the <em>workflow</em>, not the model. Business partners do not want a chatbot; they want a trusted recurring workflow to run quickly, consistently, and with the right guardrails. Encoding expectations, scrub gates, and output formats frees the data scientist for higher-leverage modeling.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

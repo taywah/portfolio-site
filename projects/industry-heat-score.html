@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Industry Heat Score - Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>Industry Heat Score</h1>
+<p class="subtitle">A monthly refreshed industry ranking that changes <em>what enters</em> the lead queue, not who reps prioritize within it. The model shifts list-building upstream toward industries with stronger customer durability and acquisition momentum.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole modeler &amp; PRD author</span>
+  <span><strong>Stack:</strong> BigQuery, Dataform, Python audit harness</span>
+  <span><strong>Period:</strong> 2026 Q2</span>
+</div>
+
+<section>
+<h2>Problem</h2>
+<p>The sales team needed to improve lead quality without simply telling reps to skip broad swaths of assigned leads. The operational constraint was clear: reps still needed sufficient volume, but the input mix could be improved upstream.</p>
+<ul>
+  <li>Rep workflows needed enough lead volume to remain useful.</li>
+  <li>Moderate-quality leads still had operational value in the sales motion.</li>
+  <li>The strongest lever was <strong>lead-supply quality</strong>, not rep triage.</li>
+</ul>
+<p>The real lever is upstream of the rep: change what gets loaded into the program in the first place.</p>
+</section>
+
+<section>
+<h2>Approach</h2>
+<p>Two-stage scoring architecture: an A-floor that gates out industries with poor customer durability, then a B-rank that scores survivors on acquisition momentum.</p>
+
+<pre class="mermaid">
+flowchart LR
+  Universe[Industry universe] --> AFloor["A-floor: customer durability filter"]
+  AFloor --> BRank[B-rank: acquisition momentum scoring]
+  BRank --> Output[Ranked target list + expected conversion signal]
+  Output --> SQL[List-build filter]
+</pre>
+
+<p>Filter-then-rank is more defensible than weighted scoring across both dimensions because the A-floor is a <em>gate</em> (binary), not a <em>weight</em>. Industries that fail durability don't get a partial-credit ranking — they're out.</p>
+</section>
+
+<section>
+<h2>Why Industry-Level</h2>
+<p><strong>Industry-level for v1, account-level for v2:</strong> the industry universe was small enough to score, audit by inspection, and route directly into existing list-building logic. If industry-level signal proved weak, the audit would still de-risk any future account-level scoring work.</p>
+<p><strong>Build vs buy rationale:</strong> the custom approach used proprietary internal customer outcomes rather than generic web-behavior intent. That made it more directly tied to the business motion and easier to validate against historical performance.</p>
+</section>
+
+<section>
+<h2>What I built</h2>
+<ul>
+  <li><strong>Full PRD</strong>: one-paragraph version, problem framing, scope/out-of-scope/non-goals, methodology, A-floor + B-rank construction, backtest design, sprint plan, integration plan, risks &amp; mitigations</li>
+  <li><strong>Gate-first sprint plan:</strong> initial audit checked coverage, sample size, and between-segment lift before committing to a full build.</li>
+  <li><strong>Audit harness:</strong> repeatable Python workflow that runs the validation checks, writes artifacts, and prints pass/fail results.</li>
+  <li><strong>Companion model card:</strong> clarified how upstream list-building and downstream rep triage models complement each other.</li>
+</ul>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Modeled upside from shifting lead mix toward higher-converting industries at constant lead volume.</li>
+  <li>Provided an internal-signal alternative to a generic third-party intent purchase.</li>
+  <li>Project framing — "upstream of the rep, not the rep" — became a reusable pattern for B2B GTM prioritization questions.</li>
+</ul>
+</section>
+
+<section>
+<h2>Lesson</h2>
+<p>When direct prioritization advice is hard to operationalize, the right move is often to re-scope the problem one level upstream. An explicit go/no-go gate is also one of the cheapest ways to de-risk a model before building for weeks.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

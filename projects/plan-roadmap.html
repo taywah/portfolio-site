@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PlanRoadmap - Sales Play Sizing Pipeline - Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>PlanRoadmap — Sales Play Sizing Pipeline</h1>
+<p class="subtitle">A CSV-in/CSV-out pipeline that takes leadership-defined sales plays and computes addressable market, reachable audience, expected qualification, revenue assumptions, win-rate signal, and opportunity size for each.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Sole designer / builder / debugger</span>
+  <span><strong>Stack:</strong> Python, BigQuery, pandas, local cache, warehouse-backed lookup tables</span>
+  <span><strong>Period:</strong> 2026 Q2</span>
+</div>
+
+<section>
+<h2>Problem</h2>
+<p>Sales leadership defined a large set of plays across intent, technology, and vertical themes. Each play needed quantified sizing across addressable market, reachable audience, revenue assumptions, win-rate signal, and opportunity size. Manual sizing would not scale.</p>
+<p>The input data was messy: some plays had explicit filter columns, while others only had descriptive headlines that needed to be parsed into structured filters.</p>
+</section>
+
+<section>
+<h2>Approach</h2>
+<p>Five-way play classifier; warehouse-backed technology lookup; fallback logic for low-signal plays; and outlier-deal alerts when historical revenue assumptions were likely distorted by unusual wins.</p>
+
+<pre class="mermaid">
+flowchart TB
+  CSV[Input CSV: sales plays] --> Classifier[5-way classifier]
+  Classifier --> Intent[Intent topic mapping]
+  Classifier --> Tech[Technology lookup]
+  Classifier --> Industry[NAICS prefix from industry name]
+  Classifier --> Combo[Industry + Tech combined filter]
+  Classifier --> Headline[Headline parser for ICP x Tech plays]
+  Intent --> Sizing
+  Tech --> Sizing
+  Industry --> Sizing
+  Combo --> Sizing
+  Headline --> Sizing[Market size, reachable audience, revenue assumptions, win rate, opportunity size]
+  Sizing --> Output[Output CSV with audit notes]
+</pre>
+</section>
+
+<section>
+<h2>What I built</h2>
+<ul>
+  <li><strong>5-way play classifier:</strong> Intent / Tech / Industry / Industry+Tech / Headline-parsed ICP×Tech</li>
+  <li><strong>Warehouse-backed technology lookup</strong> replacing a brittle hand-curated mapping file.</li>
+  <li><strong>Wildcard parent-brand expansion</strong> so broad product families mapped to all relevant tracked variants instead of a single narrow match.</li>
+  <li><strong>Fallback logic:</strong> low-signal plays fall back to motion-level averages so sparse history does not create false precision.</li>
+  <li><strong>Outlier-deal alert</strong> appended to the notes column when a play's historical revenue assumptions were likely distorted by unusually large wins.</li>
+  <li><strong>Referenced-lookup notes</strong> in the output for reviewer auditability.</li>
+  <li><strong>Intent topic resolution layer</strong> maps business-language play names to governed warehouse topics.</li>
+  <li><strong>Debugging summary</strong> documenting silent-failure patterns and fixes as a teaching artifact for the next analyst.</li>
+</ul>
+</section>
+
+<section>
+<h2>Silent-failure bug exemplars</h2>
+<ol>
+  <li><strong>Date-key type mismatch:</strong> two source tables represented fiscal periods differently, causing silent zero-match joins until the keys were normalized.</li>
+  <li><strong>Parent-brand under-expansion:</strong> a narrow manual mapping missed related product variants until the lookup layer supported wildcard expansion.</li>
+  <li><strong>Missing-value fallthrough:</strong> spreadsheet blanks became truthy placeholder values in pandas, blocking fallback logic until explicit null checks were added.</li>
+</ol>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Sized the large majority of leadership-defined plays end-to-end; remaining gaps reflected missing upstream signal rather than pipeline failure.</li>
+  <li>Batch runtime reached a 5-minute warm run, fast enough for repeated planning cycles rather than one-off analysis.</li>
+  <li>Live-computed fallback assumptions became reusable across other sizing work.</li>
+  <li>The debugging summary became the guide for extending the sizing pattern safely.</li>
+</ul>
+</section>
+
+<section>
+<h2>What I'd do differently</h2>
+<p>I shipped the reachable-audience estimate as a ratio-based approximation for the proof of concept, which was defensible for speed but became the bottleneck for a final version. In retrospect I would have started the full persona-scrub infrastructure in parallel.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

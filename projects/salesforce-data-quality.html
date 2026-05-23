@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CRM Data Quality - Taylor Young</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body class="project-page">
+
+<nav class="topnav">
+  <div class="inner">
+    <a href="../index.html" class="brand">Taylor Young</a>
+    <div class="links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+<h1>CRM Data Quality</h1>
+<p class="subtitle">Cross-functional CRM data-quality initiatives that improved account enrichment, standardized operational handoffs, and codified a reusable activity-attribution fix for future sales analyses.</p>
+
+<div class="meta-row">
+  <span><strong>Role:</strong> Discoverer, escalator, owner of the reusable rule</span>
+  <span><strong>Stack:</strong> BigQuery, CRM data, sales-engagement data, Cursor workspace rules</span>
+  <span><strong>Period:</strong> 2026 Q1-Q2</span>
+</div>
+
+<section>
+<h2>The Account-Enrichment Cleanup</h2>
+
+<h3 style="margin-top:8px;">Problem</h3>
+<p>Account enrichment depended on reliable website fields. Bad website data was corrupting downstream firmographic and industry classification because a key enrichment join used URL matching.</p>
+
+<h3>Approach</h3>
+<p>Cross-functional project with an operations partner. I built a cleanup workbook with account IDs, current websites, and proposed replacements. Operations validated the records and pushed approved updates through the CRM process.</p>
+
+<h3>Outcome</h3>
+<ul>
+  <li>Hundreds of accounts now have corrected websites driving downstream firmographic and industry matches.</li>
+  <li>QA back-checks confirmed the process did not overwrite already-correct records.</li>
+  <li>Stale accounts were flagged for follow-up cleanup.</li>
+  <li>Pattern reusable for future quarterly cleanups.</li>
+</ul>
+</section>
+
+<section>
+<h2>The Phone-Type Backfill</h2>
+<p>Operations needed a launched-account cohort re-enriched with multiple phone-number types and formatted to a standard CRM upload template.</p>
+<p>I scoped the enrichment, formatted the output, and coordinated with engineering on validation rules and update behavior so the upload could proceed without corrupting existing fields.</p>
+</section>
+
+<section>
+<h2>The Activity-Attribution Gap</h2>
+
+<h3 style="margin-top:8px;">Problem</h3>
+<p>While reviewing a reactivation contact list, I noticed several accounts showing "no recent contact" in analytical queries even though business partners had evidence of recent outreach.</p>
+
+<h3>Root cause</h3>
+<p>The root cause was a common CRM integration pattern: some third-party activities were attached at the contact level but not reliably populated at the account level. Account-only activity scrubs therefore undercounted recent outreach.</p>
+
+<h3>Diagnostic</h3>
+
+<pre class="mermaid">
+flowchart LR
+  Activity[Third-party sales activity] --> Sync[CRM sync]
+  Sync --> Task["Activity row created"]
+  Task --> ContactKey["Contact-level key populated"]
+  Task --> AccountKey["Account-level key sometimes blank"]
+  ContactKey --> ContactLookup["Contact-to-account lookup workaround"]
+  AccountKey --> Bug[Account-only queries miss activity]
+</pre>
+
+<h3>Resolution path</h3>
+<ol>
+  <li>Reproduced the issue with concrete examples that showed recent activity present at contact grain but missing from account-grain queries.</li>
+  <li>Escalated the issue with a clear explanation of why it affected downstream sales analytics.</li>
+  <li>Routed the upstream integration fix through the appropriate operations owner.</li>
+  <li>In parallel, codified the workaround as a reusable workspace rule so future activity scrubs use both direct account keys and contact-to-account rollups.</li>
+</ol>
+</section>
+
+<section>
+<h2>The Codified Workspace Rule</h2>
+<p>The rule documents both the safe query pattern and the risky account-only pattern side-by-side, with the rationale baked in. Simplified excerpt:</p>
+
+<pre><code>## Safer Pattern
+
+recently_contacted_accounts AS (
+   SELECT account_key
+   FROM activity_table
+   WHERE account_key IS PRESENT
+   UNION DISTINCT
+   SELECT contact_to_account.account_key
+   FROM activity_table
+   JOIN contact_to_account
+     ON activity_table.contact_key = contact_to_account.contact_key
+   WHERE account_key IS MISSING
+)
+
+## Risky Pattern
+
+recently_contacted_accounts AS (
+   SELECT account_key
+   FROM activity_table
+)</code></pre>
+</section>
+
+<section>
+<h2>Impact</h2>
+<ul>
+  <li>Corrected account enrichment inputs so downstream firmographic and industry matches were more reliable.</li>
+  <li>Backfilled account phone-type coverage in a format operations could upload safely.</li>
+  <li>Submitted the upstream integration issue while shipping a local analytical workaround immediately.</li>
+  <li>Pattern documented at the workspace level so future analysts do not re-introduce the gap.</li>
+</ul>
+</section>
+
+<section>
+<h2>Lesson</h2>
+<p>Data-quality escalation works better when you ship the workaround and the upstream ticket in parallel. Do the right thing locally, then codify the pattern so every future query benefits even before the platform fix lands.</p>
+</section>
+
+<a href="../index.html" class="back-link">&larr; Back to portfolio</a>
+
+</div>
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: (document.documentElement.getAttribute('data-theme') === 'dark') ? 'dark' : 'default' });
+</script>
+<script src="../assets/script.js"></script>
+</body>
+</html>
